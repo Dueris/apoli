@@ -17,12 +17,14 @@ public class ActionOnDeathPower extends Power {
     private final Predicate<Pair<DamageSource, Float>> damageCondition;
     private final Predicate<Pair<Entity, Entity>> bientityCondition;
     private final Consumer<Pair<Entity, Entity>> bientityAction;
+    private final Consumer<Entity> entityAction;
 
-    public ActionOnDeathPower(PowerType<?> type, LivingEntity entity, Predicate<Pair<DamageSource, Float>> damageCondition, Consumer<Pair<Entity, Entity>> bientityAction, Predicate<Pair<Entity, Entity>> bientityCondition) {
+    public ActionOnDeathPower(PowerType<?> type, LivingEntity entity, Predicate<Pair<DamageSource, Float>> damageCondition, Consumer<Pair<Entity, Entity>> bientityAction, Predicate<Pair<Entity, Entity>> bientityCondition, Consumer<Entity> entityAction) {
         super(type, entity);
         this.damageCondition = damageCondition;
         this.bientityAction = bientityAction;
         this.bientityCondition = bientityCondition;
+        this.entityAction = entityAction;
     }
 
     public boolean doesApply(Entity actor, DamageSource damageSource, float damageAmount) {
@@ -32,6 +34,7 @@ public class ActionOnDeathPower extends Power {
 
     public void onDeath(Entity actor) {
         bientityAction.accept(new Pair<>(actor, entity));
+        entityAction.accept(entity);
     }
 
     public static PowerFactory createFactory() {
@@ -39,11 +42,13 @@ public class ActionOnDeathPower extends Power {
             new SerializableData()
                 .add("bientity_action", ApoliDataTypes.BIENTITY_ACTION)
                 .add("damage_condition", ApoliDataTypes.DAMAGE_CONDITION, null)
-                .add("bientity_condition", ApoliDataTypes.BIENTITY_CONDITION, null),
+                .add("bientity_condition", ApoliDataTypes.BIENTITY_CONDITION, null)
+                .add("entity_action", ApoliDataTypes.ENTITY_ACTION, null),
             data ->
                 (type, player) -> new ActionOnDeathPower(type, player, data.get("damage_condition"),
                         data.get("bientity_action"),
-                        data.get("bientity_condition")))
+                        data.get("bientity_condition"),
+                        data.get("entity_action")))
             .allowCondition();
     }
 }
