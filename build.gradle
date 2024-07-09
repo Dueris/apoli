@@ -111,8 +111,8 @@ dependencies {
 	modApi "io.github.ladysnake:PlayerAbilityLib:${pal_version}"
 	include "io.github.ladysnake:PlayerAbilityLib:${pal_version}"
 
-	modApi "com.github.apace100:calio:1.21.x~dev-SNAPSHOT"
-	include "com.github.apace100:calio:1.21.x~dev-SNAPSHOT"
+	modApi "com.github.Dueris:calio:1.21.x~dev-SNAPSHOT"
+	include "com.github.Dueris:calio:1.21.x~dev-SNAPSHOT"
 
 	modApi("me.shedaniel.cloth:cloth-config-fabric:${project.clothconfig_version}") {
 		exclude(group: "net.fabricmc.fabric-api")
